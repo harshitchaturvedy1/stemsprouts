@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources - STEM Sprouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --primary: #4ade80;
+      --text: #ffffff;
+      --accent: #22c55e;
+      --card-bg: #1f1f1f;
+      --card-hover: #2a2a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    nav {
+      background: #1a1a1a;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text);
+      margin: 3px 0;
+      transition: 0.3s;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    }
+
+    header h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section h3 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .section-description {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .resource-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(74, 222, 128, 0.1);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .resource-card.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .resource-card:hover {
+      background: var(--card-hover);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(74, 222, 128, 0.15);
+      border-color: rgba(74, 222, 128, 0.3);
+    }
+
+    .resource-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #000;
+      font-weight: 600;
+    }
+
+    .resource-card h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.4rem;
+      color: var(--primary);
+    }
+
+    .resource-card p {
+      margin: 0 0 1rem 0;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .resource-tag {
+      display: inline-block;
+      background: rgba(74, 222, 128, 0.1);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .external-link::after {
+      content: " ↗";
+      opacity: 0.7;
+    }
+
+    .curriculum-section {
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 2px solid rgba(74, 222, 128, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .curriculum-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .curriculum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .curriculum-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(74, 222, 128, 0.1);
+    }
+
+    .curriculum-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .curriculum-item h5 {
+      margin: 0 0 0.5rem 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .curriculum-item p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      background: #1a1a1a;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .social-links a {
+      color: var(--text);
+      font-size: 1.5rem;
+      transition: color 0.3s, transform 0.3s;
+      opacity: 0.7;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+      
+      nav ul {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: #1a1a1a;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.3);
+        padding: 2rem 0;
+        gap: 0;
+      }
+      
+      nav ul.active {
+        left: 0;
+      }
+      
+      nav ul li {
+        margin: 1rem 0;
+      }
+
+      header h2 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 2rem 1rem;
+      }
+
+      .resources-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .curriculum-section {
+        padding: 2rem 1.5rem;
+      }
+
+      .curriculum-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 3rem 1rem 2rem;
+      }
+
+      header h2 {
+        font-size: 1.8rem;
+      }
+
+      .resource-card {
+        padding: 1.5rem;
+      }
+
+      .curriculum-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="logo.png" alt="STEM Sprouts Logo" style="height: 40px; border-radius: 50%;" />
+      <a href="index.html" style="text-decoration: none;">
+        <h1 style="margin: 0; font-size: 1.5rem; color: var(--primary);">STEM Sprouts</h1>
+      </a>
+    </div>
+
+    <ul id="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="calendar.html">Calendar</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="https://stemsprouts.wixsite.com/info/blog" target="_blank" rel="noopener">Blog ↗</a></li>
+    </ul>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <header>
+    <h2>Learning Resources</h2>
+    <p>Explore these amazing platforms and tools to continue your STEM journey at home. From coding games to science experiments, there's something for every young learner!</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- Our Past Curriculum -->
+    <section class="section">
+      <div class="curriculum-section">
+        <h3 style="text-align: center; margin-top: 0;">Our Past Curriculum</h3>
+        <p class="section-description">Explore the workshops we've created for our STEM Sprouts community. These resources include lesson plans, activities, and materials from our previous sessions.</p>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+          <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 2rem;">
+            <strong>Note:</strong> These curriculum materials are designed for supervised, live learning. Adult guidance is recommended for all activities.
+          </p>
+          
+          <a href="https://drive.google.com/drive/folders/1_tcRSgrX0NFVvjNNlHO3rsulC-ZHWPYS?usp=sharing" target="_blank" rel="noopener" style="display: inline-block; text-decoration: none;">
+            <button style="background: var(--primary); color: #000; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);" onmouseover="this.style.background='var(--accent)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(74, 222, 128, 0.4)'" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(74, 222, 128, 0.3)'">
+              Access All Curriculum Materials For FREE↗
+            </button>
+          </a>
+          
+          <p style="color: #888; font-size: 0.9rem; margin-top: 1rem;">
+            Questions about our curriculum? <a href="mailto:contact@stemsprouts.org" style="color: var(--primary); text-decoration: none; font-weight: 600;">Contact us →</a>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Online Learning Platforms -->
+    <section class="section">
+      <h3>Online Learning Platforms</h3>
+      <p class="section-description">Interactive websites and apps that make learning STEM fun and engaging</p>
+      
+      <div class="resources-grid">
+        
+        <a href="https://www.tynker.com/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Coding</div>
+          <div class="resource-icon">T</div>
+          <h4>Tynker</h4>
+          <p>Learn to code through games, puzzles, and creative projects. Perfect for beginners with drag-and-drop programming and advanced text-based coding.</p>
+        </a>
+
+        <a href="https://scratch.mit.edu/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Programming</div>
+          <div class="resource-icon">S</div>
+          <h4>Scratch</h4>
+          <p>Create interactive stories, games, and animations with MIT's visual programming language. Great for learning programming concepts.</p>
+        </a>
+
+        <a href="https://www.khanacademy.org/kids" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Multi-Subject</div>
+          <div class="resource-icon">K</div>
+          <h4>Khan Academy Kids</h4>
+          <p>Free educational content covering math, science, reading, and more. Adaptive learning with personalized lessons.</p>
+        </a>
+
+        <a href="https://blockly.games/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Logic</div>
+          <div class="resource-icon">B</div>
+          <h4>Blockly Games</h4>
+          <p>Learn programming concepts through fun puzzle games. Visual programming that teaches computational thinking.</p>
+        </a>
+
+        <a href="https://www.nasa.gov/audience/forkids/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Space Science</div>
+          <div class="resource-icon">🚀</div>
+          <h4>NASA Kids</h4>
+          <p>Explore space with games, activities, and educational content straight from NASA. Perfect for budding astronauts!</p>
+        </a>
+
+        <a href="https://www.coolmathgames.com/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Mathematics</div>
+          <div class="resource-icon">M</div>
+          <h4>Cool Math Games</h4>
+          <p>Make math fun with puzzles, logic games, and brain teasers that develop problem-solving skills.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- STEM Tools & Simulators -->
+    <section class="section">
+      <h3>STEM Tools & Simulators</h3>
+      <p class="section-description">Interactive tools and simulators for hands-on learning experiences</p>
+      
+      <div class="resources-grid">
+        
+        <a href="https://phet.colorado.edu/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Science Sims</div>
+          <div class="resource-icon">⚗️</div>
+          <h4>PhET Simulations</h4>
+          <p>Interactive science and math simulations from the University of Colorado. Explore physics, chemistry, biology, and more.</p>
+        </a>
+
+        <a href="https://www.tinkercad.com/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">3D Design</div>
+          <div class="resource-icon">🎯</div>
+          <h4>Tinkercad</h4>
+          <p>Free 3D design and 3D printing app. Create and design objects, circuits, and codeblocks with easy-to-use tools.</p>
+        </a>
+
+        <a href="https://www.codecademy.com/" target="_blank" rel="noopener" class="resource-card external-link">
+          <div class="resource-tag">Coding</div>
+          <div class="resource-icon">C</div>
+          <h4>Codecademy</h4>
+          <p>Interactive coding lessons in various programming languages. Hands-on practice with real coding projects.</p>
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://www.instagram.com/stemsprouts_/" target="_blank" aria-label="Instagram">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+      <a href="#" target="_blank" aria-label="Facebook">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+      <a href="#" target="_blank" aria-label="LinkedIn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+    </div>
+    © 2025 STEM Sprouts | Youth-led nonprofit | Cumming, GA
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+    
+    // Close menu when clicking on a link
+    document.querySelectorAll('#nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+      });
+    });
+
+    // Page animations
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+
+      // Intersection Observer for card animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('animate');
+            }, index * 100); // Stagger animation
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Observe all resource cards
+      document.querySelectorAll('.resource-card').forEach(card => {
+        observer.observe(card);
+      });
+
+      // Link fade-out effect
+      document.querySelectorAll('a[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !link.target && !href.includes('.pdf')) {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            document.body.classList.remove('fade-in');
+            document.body.style.opacity = 0;
+            setTimeout(() => {
+              window.location.href = href;
+            }, 300);
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
